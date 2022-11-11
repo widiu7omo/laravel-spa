@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {
     AppShell,
-    Navbar,
     Header,
     Footer,
+    Box,
     Aside,
     Text,
     MediaQuery,
@@ -20,8 +20,7 @@ interface MainLayoutProps {
 export default function MainLayout({children}: MainLayoutProps) {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
-    return <MantineProvider withNormalizeCSS withGlobalStyles>
-
+    return <MantineProvider withNormalizeCSS withGlobalStyles theme={{colorScheme: 'dark'}}>
         <AppShell
             styles={{
                 main: {
@@ -61,7 +60,9 @@ export default function MainLayout({children}: MainLayoutProps) {
                 </Header>
             }
         >
-            {children}
+            <Box>
+                {children}
+            </Box>
         </AppShell>
         );
     </MantineProvider>

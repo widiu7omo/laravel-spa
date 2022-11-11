@@ -16,7 +16,7 @@ import {
     IconCheckbox,
     IconSearch,
     IconPlus,
-    IconSelector,
+    IconSelector, IconPackage,
 } from '@tabler/icons';
 import React from 'react';
 import { UserButton } from './UserButton';
@@ -117,8 +117,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const links = [
-    { icon: IconBulb, label: 'Activity', notifications: 3 },
-    { icon: IconCheckbox, label: 'Tasks', notifications: 4 },
+    { icon: IconPackage, label: 'On Going', notifications: 3 },
+    { icon: IconCheckbox, label: 'Completed', notifications: 4 },
     { icon: IconUser, label: 'Contacts' },
 ];
 
