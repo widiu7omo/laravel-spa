@@ -1,25 +1,29 @@
 import {
-    createStyles,
-    Navbar,
-    TextInput,
-    Code,
-    UnstyledButton,
-    Badge,
-    Text,
-    Group,
     ActionIcon,
+    Badge,
+    Code,
+    createStyles,
+    Group,
+    Input,
+    Navbar,
+    Text,
+    TextInput,
     Tooltip,
+    UnstyledButton,
 } from '@mantine/core';
 import {
-    IconBulb,
-    IconUser,
     IconCheckbox,
-    IconSearch,
+    IconDeviceFloppy,
+    IconPackage,
     IconPlus,
-    IconSelector, IconPackage,
+    IconSearch,
+    IconSelector,
+    IconUser,
 } from '@tabler/icons';
-import React from 'react';
-import { UserButton } from './UserButton';
+import React, {useEffect} from 'react';
+import {UserButton} from './UserButton';
+import {Inertia} from "@inertiajs/inertia";
+import {usePage} from "@inertiajs/inertia-react";
 
 const useStyles = createStyles((theme) => ({
     navbar: {
@@ -88,8 +92,8 @@ const useStyles = createStyles((theme) => ({
     },
 
     collections: {
-        paddingLeft: theme.spacing.md - 6,
-        paddingRight: theme.spacing.md - 6,
+        paddingLeft: theme.spacing.md,
+        paddingRight: theme.spacing.md,
         paddingBottom: theme.spacing.md,
     },
 
@@ -117,30 +121,40 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const links = [
-    { icon: IconPackage, label: 'On Going', notifications: 3 },
-    { icon: IconCheckbox, label: 'Completed', notifications: 4 },
-    { icon: IconUser, label: 'Contacts' },
+    {icon: IconPackage, label: 'On Going', notifications: 3},
+    {icon: IconCheckbox, label: 'Completed', notifications: 4},
+    {icon: IconUser, label: 'Contacts'},
 ];
 
 const collections = [
-    { emoji: '👍', label: 'Sales' },
-    { emoji: '🚚', label: 'Deliveries' },
-    { emoji: '💸', label: 'Discounts' },
-    { emoji: '💰', label: 'Profits' },
-    { emoji: '✨', label: 'Reports' },
-    { emoji: '🛒', label: 'Orders' },
-    { emoji: '📅', label: 'Events' },
-    { emoji: '🙈', label: 'Debts' },
-    { emoji: '💁‍♀️', label: 'Customers' },
+    {emoji: '👍', label: 'Sales'},
+    {emoji: '🚚', label: 'Deliveries'},
+    {emoji: '💸', label: 'Discounts'},
+    {emoji: '💰', label: 'Profits'},
+    {emoji: '✨', label: 'Reports'},
+    {emoji: '🛒', label: 'Orders'},
+    {emoji: '📅', label: 'Events'},
+    {emoji: '🙈', label: 'Debts'},
+    {emoji: '💁‍♀️', label: 'Customers'},
 ];
 
-export function MainNavbar() {
-    const { classes } = useStyles();
 
+export interface Task {
+    emoji: string;
+    label: string;
+}
+
+export function MainNavbar() {
+    const {classes} = useStyles();
+    const props = usePage().props;
+    const tasks = props.tasks as Task[];
+    useEffect(() => {
+        console.log(props.tasks);
+    }, []);
     const mainLinks = links.map((link) => (
         <UnstyledButton key={link.label} className={classes.mainLink}>
             <div className={classes.mainLinkInner}>
-                <link.icon size={20} className={classes.mainLinkIcon} stroke={1.5} />
+                <link.icon size={20} className={classes.mainLinkIcon} stroke={1.5}/>
                 <span>{link.label}</span>
             </div>
             {link.notifications && (
@@ -151,14 +165,14 @@ export function MainNavbar() {
         </UnstyledButton>
     ));
 
-    const collectionLinks = collections.map((collection) => (
+    const collectionLinks = tasks.map((collection) => (
         <a
             href="/"
             onClick={(event) => event.preventDefault()}
             key={collection.label}
             className={classes.collectionLink}
         >
-            <span style={{ marginRight: 9, fontSize: 16 }}>{collection.emoji}</span> {collection.label}
+            <span style={{marginRight: 9, fontSize: 16}}>{collection.emoji}</span> {collection.label}
         </a>
     ));
 
@@ -169,17 +183,17 @@ export function MainNavbar() {
                     image="https://i.imgur.com/fGxgcDF.png"
                     name="Bob Rulebreaker"
                     email="Product owner"
-                    icon={<IconSelector size={14} stroke={1.5} />}
+                    icon={<IconSelector size={14} stroke={1.5}/>}
                 />
             </Navbar.Section>
 
             <TextInput
                 placeholder="Search"
                 size="xs"
-                icon={<IconSearch size={12} stroke={1.5} />}
+                icon={<IconSearch size={12} stroke={1.5}/>}
                 rightSectionWidth={70}
                 rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
-                styles={{ rightSection: { pointerEvents: 'none' } }}
+                styles={{rightSection: {pointerEvents: 'none'}}}
                 mb="sm"
             />
 
@@ -194,11 +208,14 @@ export function MainNavbar() {
                     </Text>
                     <Tooltip label="Create collection" withArrow position="right">
                         <ActionIcon variant="default" size={18}>
-                            <IconPlus size={12} stroke={1.5} />
+                            <IconPlus size={12} stroke={1.5}/>
                         </ActionIcon>
                     </Tooltip>
                 </Group>
-                <div className={classes.collections}>{collectionLinks}</div>
+                <div className={classes.collections}>
+                    <Input size="xs" placeholder="New Collection" variant="unstyled"/>
+                    {collectionLinks}
+                </div>
             </Navbar.Section>
         </Navbar>
     );

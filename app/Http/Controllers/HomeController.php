@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,11 +13,17 @@ class HomeController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        Inertia::share("tasks", Task::all());
         return Inertia::render("HomePage", [
             "title" => "Home Page"
         ]);
+    }
+
+    public function tasks()
+    {
+        return response()->json(Task::all());
     }
 
     /**
